@@ -11,6 +11,8 @@ const outputPath = path.join(OUTPUT_DIR, "team.html");
 const render = require("./lib/htmlRenderer");
 const { fetchAsyncQuestionPropertyQuestionProperty } = require("inquirer/lib/utils/utils");
 
+const employeeList = [];
+
 
 
 //Ask user for manager info
@@ -35,6 +37,8 @@ function askUserforManagerInfo() {
     }]).then((managerData) => {
 
         const newManager = new Manager(managerData.name, managerData.id, managerData.email, managerData.officeNumber);
+        employeeList.push(newManager);
+        askUserforEmployeeType();
 
     });
 
@@ -43,23 +47,30 @@ function askUserforManagerInfo() {
 //Ask user for next employee type
 function askUserforEmployeeType() {
 
-    // return inquirer.prompt([{
-    //     type: "input",
-    //     message: "What is your employee's name?",
-    //     name: "name",
-    // }, {
-    //     type: "input",
-    //     message: "What is your employee's ID?",
-    //     name: "id",
-    // }, {
-    //     type: "input",
-    //     message: "What is your employee's email?",
-    //     name: "email",
-    // }, {
-    //     type: "input",
-    //     message: "What school did you go to?",
-    //     name: "school",
-    // }])
+    return inquirer.prompt([{
+        //     type: "input",
+        //     message: "What is your employee's name?",
+        //     name: "name",
+        // }, {
+        //     type: "input",
+        //     message: "What is your employee's ID?",
+        //     name: "id",
+        // }, {
+        //     type: "input",
+        //     message: "What is your employee's email?",
+        //     name: "email",
+        // }, {
+        //     type: "input",
+        //     message: "What school did you go to?",
+        //     name: "school",
+    }]).then((newEmployeeType) => {
+        //if they selected a new engineer from the choice, ask for correct function
+        //ELSE if new intern, ask intern questions
+        //ELSE exit application
+        createHtmlFile();
+    }
+
+
 
 }
 
@@ -82,7 +93,13 @@ function askUserForEngineerInfo() {
         type: "input",
         message: "What is your Engineer's GitHub username?",
         name: "gitHub",
-    }])
+    }]).then((engineerData) => {
+
+        const newEngineer = new Engineer(engineerData.name, engineerData.id, engineerData.email, engineerData.gitHub);
+        employeeList.push(newEngineer);
+        askUserforEmployeeType();
+
+    });
 
 }
 
@@ -105,9 +122,27 @@ function askUserforInternInfo() {
         type: "input",
         message: "Where did your Intern go to school?",
         name: "school",
-    }])
+    }]).then((internData) => {
+
+        const newIntern = new Engineer(internData.name, internData.id, internData.email, internData.school);
+        employeeList.push(newIntern);
+        askUserforEmployeeType();
+    });
 
 }
+
+function createHtmlFile() {
+
+    const htmlContent = render(employeeList);
+
+    fs.writeFile("output.html", htmlContent, (err) => {
+        if (err) console.log("failed to write file");
+        else console.log("File written");
+    });
+
+}
+
+askUserforManagerInfo();
 
 // Write code to use inquirer to gather information about the development team members,
 // and to create objects for each team member (using the correct classes as blueprints!)
