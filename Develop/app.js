@@ -68,7 +68,7 @@ function askUserforEmployeeType() {
         //ELSE if new intern, ask intern questions
         //ELSE exit application
         createHtmlFile();
-    }
+    });
 
 
 
@@ -168,30 +168,3 @@ askUserforManagerInfo();
 // for the provided `render` function to work! ```
 
 
-inquirer
-    //intern
-    .prompt([{
-        type: "input",
-        message: "What is your name?",
-        name: "name",
-    }, {
-        type: "input",
-        message: "What is your ID?",
-        name: "id",
-    }, {
-        type: "input",
-        message: "What is your email?",
-        name: "email",
-    }, {
-        type: "input",
-        message: "What school did you go to?",
-        name: "school",
-    }])
-
-
-
-What is your managers name, id, email, office Number,
-
-    which type of team member would you like to add ? (Enginner, intern, I don't want to add any more team members)
-
-what is your team members name, id, email, specific question
